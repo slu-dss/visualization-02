@@ -1,52 +1,46 @@
-# empty-lesson <img src="/img/logo.png" align="right" />
-[![](https://img.shields.io/badge/seminar-seminar%20name-brightgreen.svg)](https://github.com/slu-dss/empty-lesson/)
-[![](https://img.shields.io/badge/lesson%20status-under%20development-red.svg)](https://github.com/slu-dss/empty-lesson/)
-[![](https://img.shields.io/github/release/slu-dss/empty-lesson.svg?label=version)](https://github.com/slu-dss/empty-lesson/releases)
-[![](https://img.shields.io/github/last-commit/slu-dss/empty-lesson.svg)](https://github.com/slu-dss/empty-lesson/commits/master)
-[![Travis-CI Build Status](https://travis-ci.org/slu-dss/empty-lesson.svg?branch=master)](https://travis-ci.org/slu-dss/empty-lesson)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/slu-dss/empty-lesson?branch=master&svg=true)](https://ci.appveyor.com/project/slu-dss/empty-lesson)
+# visualization-02 <img src="/img/logo.png" align="right" />
+[![](https://img.shields.io/badge/seminar-%20data%20visualization%20in%20R-brightgreen.svg)](https://github.com/slu-dss/visualization-02/)
+[![](https://img.shields.io/badge/lesson%20status-under%20development-red.svg)](https://github.com/slu-dss/visualization-02/)
+[![](https://img.shields.io/github/release/slu-dss/visualization-02.svg?label=version)](https://github.com/slu-dss/visualization-02/releases)
+[![](https://img.shields.io/github/last-commit/slu-dss/visualization-02.svg)](https://github.com/slu-dss/visualization-02/commits/master)
+[![Travis-CI Build Status](https://travis-ci.org/slu-dss/visualization-02.svg?branch=master)](https://travis-ci.org/slu-dss/visualization-02)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/slu-dss/visualization-02?branch=master&svg=true)](https://ci.appveyor.com/project/slu-dss/visualization-02)
 
 ## Lesson Overview
-**THIS IS AN EMPTY VERSION OF THE LESSON TEMPLATE DESGINED TO GET INSTRUCTORS AND MAINTAINERS STARTED ON NEW LESSONS.**
-
-To apply this template to a new repo named `new-lesson` via the terminal:
-
-```bash
-# Create a bare clone of the repository.
-git clone --bare https://github.com/slu-dss/empty-lesson.git
-
-# Mirror-push to the new repository.
-cd empty-lesson.git
-git push --mirror https://github.com/slu-dss/new-lesson.git
-
-# Remove the temporary local repository you created in step 1.
-cd ..
-rm -rf empty-lesson.git
-```
-
-Details can be found on [GitHub's help page for duplicating repos](https://help.github.com/articles/duplicating-a-repository/).
+This repository contains the second lesson for the Data Visualization in R seminar. This lesson explores how the structure of data influences visualizations.
 
 ### Objectives
 At the end of this lesson, participants should be able to:
 
-1.
-2.
-3.
+1. Recall key differences between `base` and `ggplot2` plotting
+2. Construct scatter plots with loess fit lines
+3. Generate paneled plots using faceting
 
 ### Lesson Resources
 * The [`SETUP.md`](/references/SETUP.md) file in the [`references/`](/references) directory contains a list of packages required for this lesson
-* The [`notebook/`](/notebook) directory contains...
-* The [lesson slides](https://slu-dss.github.io/<repo>/) provide an overview of...
+* The [`notebook/`](/notebook) directory contains an awesome markdown file for this lesson in both incomplete and complete versions
+* The [lesson slides](https://slu-dss.github.io/visualization-02/) provide an overview of how the structure of data influences visualizations
 * The [`references/`](/references) directory also contains other notes on changes to the repository, key topics, terms, data sources, and software.
 
 ### Extra Resources
+* [R for Data Science, Chapter 3 - Data Visualisation](https://r4ds.had.co.nz/data-visualisation.html)
+* [R for Data Science, Chapter 28 - Graphics for Communication](https://r4ds.had.co.nz/graphics-for-communication.html)
+* [RStudio's `ggplot2` Cheat Sheet](https://www.rstudio.com/resources/cheatsheets/#ggplot2)
+* [`ggplot2` extensions gallery](http://www.ggplot2-exts.org/gallery/)
 
+## Lesson Quick Start
+### Install Software
+The packages we'll need for today can be installed using:
+
+```r
+install.packages(c("tidyverse", "here", "knitr", "rmarkdown", "usethis"))
+```
 
 ## Access Lesson
 You can download this lesson to your Desktop easily using `usethis`:
 
 ```r
-usethis::use_course("https://github.com/slu-dss/empty-lesson/archive/master.zip")
+usethis::use_course("https://github.com/slu-dss/visualization-02/archive/master.zip")
 ```
 
 By using `usethis::use_course`, all of the lesson materials will be downloaded to your computer, automatically extracted, and saved to your desktop. You can then open the `.Rproj` file to get started.

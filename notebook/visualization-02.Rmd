@@ -1,0 +1,266 @@
+---
+title: "Visualization 02 - ggplot loves tidy data"
+author: "Yujie Su, M.S. & Matthew Schuelke, Ph.D."
+date: '(`r format(Sys.time(), "%B %d, %Y")`)'
+output:
+  github_document: default
+  html_notebook: default
+---
+
+## Introduction
+
+In this lesson, we will explore how the structure of data influences visualizations, and how to transform data into a tidy format.
+
+## Load Dependencies
+
+The following code loads the package dependencies for our analysis:
+
+```{r package-load-1}
+library(here)  # find your files
+library(readr) # work with csv files
+```
+
+Now you try loading two additional packages - `ggplot2` (for making visualizations) and `tidyr` (for data wrangling):
+
+```{r package-load-2}
+
+```
+
+We now have the packages needed for our analyses.
+
+## Load Data
+
+```{r}
+houseWide <- read_csv(here('data', 'houseWide.csv'))
+```
+
+Now you try to load data 'houseWide2.csv'
+
+```{r practice-1}
+
+```
+
+## Objects and Layers
+
+In this section, we will explore how the structure of data influences visualizations. Before plotting, we need to understand our data a little bit.
+
+### Data Layer
+
+To understand how the data structure relates to plotting, let's look at the `houseWide` data set.
+
+```{r}
+print(houseWide)
+```
+
+For the data set, each column is a variable, and we have 7 variables in the `houseWide` data set. 
+
+*First we will explore the difference between quick base plots and quick ggplot plots.*
+
+## Base plot
+
+We could call the `base` package `plot` function by positional arraying the x and y variables as the `plot()` function arguments to make a scatter plot of `SalePrice` against `GrlivArea`. 
+
+```{r}
+plot(houseWide$GrLivArea, houseWide$SalePrice)
+```
+
+If we want to add a fit line describing the relationship between `GrLivArea` and `SalePrice` we can use `lines()` in conjunction with `lowess()` and color it blue.
+
+```{r}
+plot(houseWide$GrLivArea, houseWide$SalePrice)
+lines(lowess(houseWide$GrLivArea, houseWide$SalePrice), col = "blue")
+```
+
+Limitations of base plot:
+
+1. Plot doesn't get redrawn.
+
+2. Plot is drawn as an image, and we keep adding on that image. 
+
+3. Need to manually add legend.
+
+4. No unified framework for plotting.
+
+## ggplot2 
+
+The central function in `ggplot2` is `ggplot()`. You will use it on all variety of plots we make.
+
+What we have here are two layers of `ggplot2`: data and aesthetics. Data is our data set, `houseWide`, and we will use the same aesthetics that we used in base plot, Y is `SalePrice` plotted against X, `GrlivArea`.
+
+To specify the `geom_point` layer, we can add a plus at the end of first argument, then add a `geom_point()` function. No argument is needed right now.
+
+This is same as the first plot we created with base package.
+
+```{r}
+ggplot(houseWide, aes(x = GrLivArea, y = SalePrice)) + 
+  geom_point()
+```
+
+### ggplot Objects
+
+A major difference between `ggplot` and base plot is that `ggplot` creates an object that can be saved and manipulated.
+
+We could assign the basic layers to an object called `p`, for example. We can recycle the object with a variety of different plot types. 
+
+First we make the common, underlying object.
+
+```{r}
+p <- ggplot(houseWide, aes(x = GrLivArea, y = SalePrice))
+```
+
+Then we can add layer to that object such as `geom_points()`.
+
+```{r}
+p + geom_point()
+```
+
+Or we could instead add a `geom_smooth()`.
+
+```{r}
+p + geom_smooth()
+```
+
+We can assign multiple layers for an object, and then when I call p, the data, the aesthetic and the geom which define the plot type is drawn.
+
+```{r}
+p <- ggplot(houseWide, aes(x = GrLivArea, y = SalePrice)) + 
+  geom_point() +
+  geom_smooth()
+
+p
+```
+
+By now you should see that ggplot is a very flexible way of making complex plots.
+
+Now it's your turn to make a plot.
+
+First print out the contents of `houseWide2` to see its structure.
+
+```{r practice-2a}
+
+```
+
+Then make a scatter plot of `SalePrice` against first floor square feet (`FFlrSF`), and add a fitted loess line on it.
+
+```{r practice-2b}
+
+```
+
+## Proper Data Format
+
+In a previous section we plotted a scatter plot of `SalePrice` against `GrLivArea`. If we want to visualize the relationship between `LotArea` and `SalePrice`. We could make a different scatter plot.
+
+```{r}
+ggplot(houseWide, aes(x = LotArea, y = SalePrice)) + 
+  geom_point() + 
+  geom_smooth()
+```
+
+Now, you try to make 2 scatter plots with loess fit lines:
+
+1. `SalePrice` against the area of second floor (`SFlrSF`). 
+
+```{r practice-3a}
+
+```
+
+2. `SalePrice` against the total basement area (`TotalBsmtSF`).
+
+```{r practice-3b}
+
+```
+
+In our previous plots, various area variables were mapped to the x aesthetic, so area is very interesting. 
+
+What if we want to plot `LotArea` and `GrLivArea` at the same time, and make comparison between them?
+
+One method is to add another points geometry layer on the other using "+":
+
+```{r}
+ggplot(houseWide, aes(x = GrLivArea, y = SalePrice)) + 
+  geom_point() + 
+  geom_point(aes(x = LotArea, y = SalePrice), col = "red")
+```
+
+Compared with the base R plot, 
+
+1. `ggplot` specifies a new x and y axis when we add a layer on top of the previous plot
+
+2. Plotting space is adjusted for the new information
+
+3. `ggplot2` produces an object that we can manipulate
+
+Although this works, this is not a correct way to do ggplot plots. One reason this is wrong is because there is no legend for the second group of data.
+
+**So, please never do this.**
+
+## Data Structure
+
+To correctly plot the data set at hand, we need to think about the structure of the data set first.
+
+In previous plots, the y variables are the same, and x variables are for various areas. In one specific instance, we plotted 3 variables, `SalesPrice`, `LotArea` and `GrlivArea`. In both `base` package and `ggplot2`, we layered 2 series of points on top of each other. If we wanted to do it properly, we would rearrange the data to define variables in our data set according to our actual interests.
+
+Since both `GrLivArea` and `LotArea` are different types of area, we want to gather the value of `LotArea` and `GrlivArea` into one column. We can do this with package `tidyr`.
+
+In package `tidyr`, the function `gather` is used to gather columns into rows. Its compliment, the function `spread` is used to spread rows into columns.
+
+Here we gather the value of `LotArea` and `GrLivArea` into one column 'Area', and add another column 'Type' indicating the type of area.
+
+```{r}
+houseTidy <- tidyr::gather(data = houseWide, key = "Type", value = 'Area', LotArea, GrLivArea)
+```
+
+Let's have a look at the structure of our new data.
+
+Now, both `LotArea` and `GrlivArea` are categories within the new `Type` variable.
+
+```{r}
+print(houseTidy)
+```
+
+Now you try to gather the value of columns `FFlrSF`, `SFlrSF`, and `TotalBsmtSF` into one column 'Area', and add a new column 'Floor' indicating the floor of the house. The new 'Floor' variable will be a categorical variable with values of "FFlrSF"", "SFlrSF", and "TotalBsmtSF". Store this new dataset under a different name.
+
+```{r practice-4}
+
+```
+
+After you finished the transformation, have a look at the structure of your new data set use `print()`.
+
+```{r practice-5}
+
+```
+
+Here we make scatter plot of `SalePrice` against `GrlivArea` and `LotArea` at once with our new data set.
+
+```{r}
+ggplot(houseTidy, aes(x = Area, y = SalePrice, color = Type)) + 
+  geom_point()
+```
+
+In previous plots, we used a different color to distinguish area types, so color is a scale, like the X axis and Y axis are scales.
+
+Above is the typical way in which we use ggplot, the data is arranged to make the function calls as straightforward as possible. 
+
+We have 3 variables and we map them in 3 scales. Now a legend is automatically generated. 
+
+It's your turn to make scatter plot of `SalePrice` against different `Style`s at the same time with your new data set. Try to map `Area` to the X axis, `SalePrice` to the Y axis, and `Style` to color.
+
+```{r practice-6}
+
+```
+
+We now have a variable `Style`, which has '1Story', '2Story' and 'Other' as categories. We have a variable `Type`, which has 'GrLivArea' and 'LotArea' as categories. We can make one plot for each `Style` and `Type` interaction investigated. We can do this by mapping one variable to the color scale and use the other variable for what is known as *faceting*.
+
+The proper way to make plots is not only easier, but a more accurate representation of the data.
+
+```{r}
+ggplot(houseTidy, aes(x = Area, y = SalePrice, col = Type)) + 
+  geom_point() + 
+  facet_grid(. ~ Style)
+```
+
+Here you try to make a scatter plot of `SalePrice` against `Area`, and compare the impacts of variables `Ages` and `Floor` at the same time using the color scale and faceting. 
+
+```{r practice-7}
+
+```
