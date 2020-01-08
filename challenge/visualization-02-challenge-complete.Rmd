@@ -1,0 +1,77 @@
+---
+title: "Visualization 02 Challenge Complete"
+author: "Maya Gann-Bociek & Matthew Schuelke, Ph.D."
+date: '(`r format(Sys.time(), "%B %d, %Y")`)'
+output:
+  github_document: default
+  html_notebook: default
+---
+
+## Introduction
+
+In this section, we will explore how the structure of your data influences your plots, and how to transform our data into the clean data. We will explore NHANES dataset again with "nhanes_c2.csv" to find the trends of two kinds of Blood Pressure, BPDia and BPSys, and plot it against Age of Male and Female seperately.
+
+## Tasks
+
+1. Load dependencies
+2. Load the dataset "nhanes_c2.csv" into your environment
+3. Explore the data
+4. Plot the data
+
+## Load Dependencies
+
+The following code loads the package dependencies for our analysis:
+
+```{r}
+# tidyverse packages
+library(dplyr)   
+library(tidyr)   
+library(ggplot2)  
+library(readr)    
+library(here)
+library(skimr)
+```
+
+We now have the packages needed for our analyses.
+
+## Load Data 
+
+Load in data "nhanes_c2.csv"
+
+```{r}
+nhanes <- read_csv(here('data', 'nhanes_c2.csv'))
+```
+
+## Explore the Data
+
+Now try to use print() and skim() to explore your dataset
+
+```{r}
+print(nhanes)
+skim(nhanes)
+```
+
+## Plot the Data
+
+Here try to make a scatter plot:
+
+* blood pressure against age 
+* comparing the impacts of variables gender and different type of blood pressure at the same time 
+* add losses line to each gender and type interaction
+* set appropriate x and y labels
+* try to transform the raw data if it is necessary
+
+```{r}
+# data transformation
+nhanesTidy <- gather(nhanes, 
+                     key = "type",
+                     value = "BP",
+                     c(BPSys, BPDia))
+
+# plotting
+ggplot(nhanesTidy, aes(x = ageMonths, y = BP, color = gender)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ type) + 
+  labs(x = "Age (months)", y = "Blood Pressure (mmHg)")
+```
